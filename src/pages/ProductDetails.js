@@ -20,6 +20,7 @@ const ProductDetails = () => {
   }, [])
 
   console.log(productDetail)
+  const calculated_discount = (productDetail?.price?.discounted / productDetail?.price?.old) * 100 - 100
   return (
     <div className='product-detail'>
       <Breadcrumbs />
@@ -30,31 +31,17 @@ const ProductDetails = () => {
             <div className='col-lg-5'>
               <div className='product-image-content'>
                 <div className='product-main-img'>
-                  <img
-                    src='https://ae01.alicdn.com/kf/S9bcc8656357f4cda8bff3aaf37325ec16/2022-New-Men-s-Shoes-Mesh-Sneakers-Gray-Tennis-Shoes-Moccasin-Shoes-Lace-Up-Loafers-Comfortable.jpg_Q90.jpg_.webp'
-                    alt=''
-                  />
+                  <img src={productDetail?.image} alt='' />
                 </div>
                 <div className='product-img-gallery'>
                   <ul>
-                    <li className='active'>
-                      <img
-                        src='https://ae01.alicdn.com/kf/S7e556daed6ec45e5b605cc8a024badf0d/2022-New-Men-s-Shoes-Mesh-Sneakers-Gray-Tennis-Shoes-Moccasin-Shoes-Lace-Up-Loafers-Comfortable.jpg_50x50.jpg_.webp'
-                        alt=''
-                      />
-                    </li>
-                    <li>
-                      <img
-                        src='https://ae01.alicdn.com/kf/S7e556daed6ec45e5b605cc8a024badf0d/2022-New-Men-s-Shoes-Mesh-Sneakers-Gray-Tennis-Shoes-Moccasin-Shoes-Lace-Up-Loafers-Comfortable.jpg_50x50.jpg_.webp'
-                        alt=''
-                      />
-                    </li>
-                    <li>
-                      <img
-                        src='https://ae01.alicdn.com/kf/S7e556daed6ec45e5b605cc8a024badf0d/2022-New-Men-s-Shoes-Mesh-Sneakers-Gray-Tennis-Shoes-Moccasin-Shoes-Lace-Up-Loafers-Comfortable.jpg_50x50.jpg_.webp'
-                        alt=''
-                      />
-                    </li>
+                    {productDetail?.gallery?.map((item, index) => {
+                      return (
+                        <li key={index}>
+                          <img src={item?.thumb} alt='' />
+                        </li>
+                      )
+                    })}
                   </ul>
                 </div>
               </div>
@@ -62,65 +49,53 @@ const ProductDetails = () => {
             <div className='col-lg-7'>
               <div className='product-details-info'>
                 <div className='product-title'>
-                  <h4>
-                    2022 New Men's Shoes Mesh Sneakers Gray Tennis Shoes Moccasin Shoes Lace Up Loafers
-                    Comfortable Walking Shoes Fashion Drive Shoe
-                  </h4>
+                  <h4>{productDetail?.title}</h4>
                 </div>
                 <div className='product-price'>
                   <p>
                     Price:
                     <span className='price'>
-                      $40.2 <del>$50</del> <span className='discount'>(50% OFF)</span>
+                      ${productDetail?.price?.discounted} <del>${productDetail?.price?.old}</del>{" "}
+                      <span className='discount'>({Math.abs(Math.round(calculated_discount))}% OFF)</span>
                     </span>
                   </p>
                 </div>
                 <div className='product-variation'>
-                  <div className='variation color'>
-                    <p>
-                      color : <strong>Black</strong>
-                    </p>
-                    <div className='color-gallery'>
-                      <ul>
-                        <li className='active'>
-                          <img
-                            src='https://ae01.alicdn.com/kf/S5d242b090abb48299274f75f0822b703i/2022-New-Men-s-Shoes-Mesh-Sneakers-Gray-Tennis-Shoes-Moccasin-Shoes-Lace-Up-Loafers-Comfortable.jpg_50x50.jpg_.webp'
-                            alt=''
-                          />
-                        </li>
-                        <li>
-                          <img
-                            src='https://ae01.alicdn.com/kf/S5d242b090abb48299274f75f0822b703i/2022-New-Men-s-Shoes-Mesh-Sneakers-Gray-Tennis-Shoes-Moccasin-Shoes-Lace-Up-Loafers-Comfortable.jpg_50x50.jpg_.webp'
-                            alt=''
-                          />
-                        </li>
-                        <li>
-                          <img
-                            src='https://ae01.alicdn.com/kf/S5d242b090abb48299274f75f0822b703i/2022-New-Men-s-Shoes-Mesh-Sneakers-Gray-Tennis-Shoes-Moccasin-Shoes-Lace-Up-Loafers-Comfortable.jpg_50x50.jpg_.webp'
-                            alt=''
-                          />
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                  <div className='variation size'>
-                    <p>
-                      Size : <strong>9</strong>
-                    </p>
-                    <div className='size-gallery'>
-                      <ul>
-                        <li>
-                          <span>5</span>
-                        </li>
-                        <li>
-                          <span>7</span>
-                        </li>
-                        <li className='active'>
-                          <span>9</span>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
+                  {productDetail?.variation?.props.map((item) => {
+                    return (
+                      <div className='variation' key={item.id}>
+                        <p>
+                          {item.name} : <strong></strong>
+                        </p>
+                        {item.name === "Color" && (
+                          <div className='color-gallery'>
+                            <ul>
+                              {item?.values.map((color) => {
+                                return (
+                                  <li key={color.id}>
+                                    <img src={color.image} alt={color.name} title={color.name} />
+                                  </li>
+                                )
+                              })}
+                            </ul>
+                          </div>
+                        )}
+                        {item.name === "Shoe Size" && (
+                          <div className='size-gallery'>
+                            <ul>
+                              {item?.values.map((size) => {
+                                return (
+                                  <li key={size.id}>
+                                    <span>{size.name}</span>
+                                  </li>
+                                )
+                              })}
+                            </ul>
+                          </div>
+                        )}
+                      </div>
+                    )
+                  })}
                 </div>
               </div>
             </div>
