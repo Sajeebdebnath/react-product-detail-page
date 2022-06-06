@@ -1,0 +1,204 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell",
+    "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+ul,
+li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  padding: 0;
+}
+
+.related-categories {
+  background: #fdeb5a;
+  text-align: left;
+  padding: 10px;
+}
+
+.related-categories h4 {
+  font-size: 16px;
+}
+.breadcrumbs {
+  padding-left: 20px;
+}
+.breadcrumbs ul {
+  display: flex;
+  gap: 30px;
+}
+
+.breadcrumbs ul li a {
+  text-decoration: none;
+  color: gray;
+}
+
+.breadcrumbs ul li {
+  position: relative;
+}
+
+.breadcrumbs ul li:after {
+  content: url("https://api.iconify.design/dashicons/arrow-right-alt2.svg?color=gray");
+  position: absolute;
+  right: -20px;
+  top: 3px;
+}
+
+.product-image-content .product-main-img img {
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+  object-position: bottom;
+  transition: 0.3s;
+}
+
+.product-image-content .product-main-img {
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+.product-main-img:hover img {
+  transform: scale(1.4);
+  object-position: bottom;
+}
+
+.product-image-content .product-img-gallery ul {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+.product-image-content .product-img-gallery ul li {
+  border: 2px solid #cdcdcd;
+  border-radius: 3px;
+  cursor: pointer;
+}
+.product-image-content .product-img-gallery ul li img {
+  width: 50px;
+  height: 50px;
+  border-radius: 3px;
+}
+
+.product-image-content .product-img-gallery ul li.active {
+  border-color: #fdeb5a;
+}
+
+.product-details-info .product-title {
+  background: #f5e354;
+  padding: 10px;
+  margin-top: -15px;
+}
+
+.product-details-info .product-title h4 {
+  font-size: 14px;
+  font-weight: normal;
+}
+
+.product-details-info .product-price {
+  background: white;
+  padding: 10px;
+  margin-top: 20px;
+  box-shadow: 0px 0px 3px 0px #80808061;
+}
+
+.product-details-info {
+  padding: 15px;
+  height: 100%;
+}
+
+.product-details-info .product-price p {
+  font-weight: bold;
+}
+
+.product-details-info .product-price p .price {
+  font-size: 20px;
+  padding-left: 10px;
+}
+
+.product-details-info .product-price p .price del {
+  color: #80808063;
+  margin: 0 10px;
+}
+
+.product-details-info .product-price p .discount {
+  color: #fd9d69;
+}
+.product-variation .variation {
+  padding: 10px;
+  box-shadow: 0px 0px 3px 0px #80808061;
+  margin: 20px 0;
+}
+
+.product-variation .variation p {
+  text-transform: capitalize;
+}
+
+.product-variation .variation .color-gallery {
+  margin-top: 15px;
+}
+
+.product-variation .variation .color-gallery ul {
+  display: flex;
+  gap: 15px;
+}
+
+.product-variation .variation .color-gallery ul li {
+  border: 2px solid #cdcdcd;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.product-variation .variation .color-gallery ul li.active {
+  border-color: #f5e354;
+}
+
+.product-variation .variation .color-gallery ul li img {
+  width: 50px;
+  height: 50px;
+}
+
+.product-variation .variation .size-gallery {
+  margin-top: 15px;
+}
+
+.product-variation .variation .size-gallery ul {
+  display: flex;
+  gap: 15px;
+}
+
+.product-variation .variation .size-gallery ul li {
+  border: 2px solid #cdcdcd;
+  border-radius: 3px;
+  padding: 3px 10px;
+  padding-right: 30px;
+  cursor: pointer;
+}
+
+.product-variation .variation .size-gallery ul li.active {
+  border-color: #f5e354;
+}
+
+/* Reponsive CSS */
+@media (max-width: 991px) {
+  .product-details-info {
+    margin-top: 25px;
+  }
+}
+@media (max-width: 776px) {
+  .breadcrumbs {
+    padding-left: 0;
+    margin-top: 15px;
+  }
+}

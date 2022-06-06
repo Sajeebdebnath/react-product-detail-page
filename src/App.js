@@ -1,7 +1,9 @@
+import ProductDetails from "./pages/ProductDetails"
+
 function App() {
   return (
     <div className='App'>
-      <h1>Product Detail Page</h1>
+      <ProductDetails />
     </div>
   )
 }
