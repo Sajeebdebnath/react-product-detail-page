@@ -2,7 +2,7 @@ import axios from "axios"
 import { useEffect, useState } from "react"
 import Breadcrumbs from "../components/Breadcrumbs"
 
-const url = process.env.REACT_APP_BACKEND_SERVER
+const url = "https://moveon-api-server.sbox.ali2bd.net/api/v1"
 
 const ProductDetails = () => {
   const [productDetail, setProductDetail] = useState([])
