@@ -1,12 +1,24 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
+import { initializeConnect } from 'react-redux/es/components/connect'
 import Breadcrumbs from "../components/Breadcrumbs"
 
 const url = "https://moveon-api-server.sbox.ali2bd.net/api/v1"
 
 const ProductDetails = () => {
-  const [productDetail, setProductDetail] = useState([])
+  const [productDetail, setProductDetail] = useState(null)
   const [mainImage, setMainImage] = useState("")
+
+
+
+  const [isolatedData, setIsolatedData] = useState({
+    color: productDetail?.variation?.skus[0].props[0],
+    size: productDetail?.variation?.skus[0].props[1],
+  })
+  const [valueName, setValueName] = useState({
+    color: "",
+    size: "",
+  })
 
   useEffect(() => {
     const loadSingleProduct = async () => {
@@ -18,18 +30,30 @@ const ProductDetails = () => {
         .catch((error) => console.log(error.response))
     }
     loadSingleProduct()
+
   }, [])
 
-  const [isLoateData, setIsolateData] = useState({
-    color: productDetail?.variation?.skus[0].props[0],
-    size: productDetail?.variation?.skus[0].props[1],
-  })
+  useEffect(() => {
+    console.log('productDetail changed')
+    const fetchMatchData = (isLoateData) => {
+      var filter_product = productDetail?.variation?.skus.filter(
+        (item) => item.props[0] === isLoateData.color && item.props[1] === isLoateData.size
+      )
+      return filter_product
+    }
+    let iniitialData = {
+      color: productDetail?.variation?.skus[0].props[0],
+      size: productDetail?.variation?.skus[0].props[1],
+    }
+    setSeletedData(fetchMatchData(iniitialData))
+    setIsolatedData(iniitialData);
+    if (productDetail) {
+      setValueName({ color: getColorName(productDetail, iniitialData.color)[0].name, size: getSizeName(productDetail, iniitialData.size)[0].name })
+    }
+  }, [productDetail])
 
   const [selectedData, setSeletedData] = useState([])
-  const [valueName, setValueName] = useState({
-    color: "",
-    size: "",
-  })
+
 
   useEffect(() => {
     const fetchMatchData = (isLoateData) => {
@@ -39,20 +63,31 @@ const ProductDetails = () => {
       return filter_product
     }
 
-    let match_data = fetchMatchData(isLoateData)
+
+
+    let match_data = fetchMatchData(isolatedData)
     setSeletedData(match_data)
-  }, [isLoateData])
+  }, [isolatedData, productDetail?.variation?.skus])
 
   const setImage = (event) => {
     setMainImage(event.target.name)
   }
 
+  function getSizeName(productDetail, id) {
+    return productDetail?.variation?.props[1].values.filter((item) => item.id === id)
+  }
+
+  function getColorName(productDetail, id) {
+    return productDetail?.variation?.props[0].values.filter((item) => item.id === id)
+  }
+
+
   const onColorVariationChange = (id) => {
-    setIsolateData({
-      ...isLoateData,
+    setIsolatedData({
+      ...isolatedData,
       color: id,
     })
-    const colorName = productDetail?.variation?.props[0].values.filter((item) => item.id === id)
+    const colorName = getColorName(productDetail, id)
     console.log(colorName[0].title)
     setValueName({
       ...valueName,
@@ -60,11 +95,11 @@ const ProductDetails = () => {
     })
   }
   const onSizeVariationChange = (id) => {
-    setIsolateData({
-      ...isLoateData,
+    setIsolatedData({
+      ...isolatedData,
       size: id,
     })
-    const sizeName = productDetail?.variation?.props[1].values.filter((item) => item.id === id)
+    const sizeName = getSizeName(productDetail, id)
     console.log(sizeName[0].title)
     setValueName({
       ...valueName,
@@ -128,8 +163,8 @@ const ProductDetails = () => {
                     return (
                       <div className='variation' key={item.id}>
                         <p>
-                          {item.name} :{" "}
-                          <strong>{item.name === "Color" ? valueName.color : valueName.size}</strong>
+                          {item.name}: {" "}
+                          <strong>{item.name === "Color" ? valueName?.color : valueName?.size}</strong>
                         </p>
                         {item.name === "Color" && (
                           <div className='color-gallery'>
@@ -143,8 +178,8 @@ const ProductDetails = () => {
                                       selectedData === undefined
                                         ? ""
                                         : selectedData[0]?.props[0] === color.id
-                                        ? "active"
-                                        : ""
+                                          ? "active"
+                                          : ""
                                     }
                                   >
                                     <img src={color.image} alt={color.title} title={color.title} />
@@ -165,8 +200,8 @@ const ProductDetails = () => {
                                       selectedData === undefined
                                         ? ""
                                         : selectedData[0]?.props[1] === size.id
-                                        ? "active"
-                                        : ""
+                                          ? "active"
+                                          : ""
                                     }
                                     onClick={() => onSizeVariationChange(size.id)}
                                   >
@@ -191,3 +226,4 @@ const ProductDetails = () => {
 }
 
 export default ProductDetails
+
